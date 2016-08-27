@@ -1,6 +1,6 @@
 #
 # dependencies: []
-# setting_vars: [home_dir]
+# setting_vars: [home_dir, host_home_dir]
 #
 - name: install packages
   apt: name={{ item }} state=present
@@ -21,10 +21,19 @@
 - name: install dotfiles
   shell: /usr/bin/zsh -c '{{ home_dir }}/dotfiles/_setup.zsh'
 
+- name: set zsh
+  shell: chsh -s /usr/bin/zsh {{ install_user }}
+  become: yes
+  become_user: root
+
+# TODO: can't copy.
 # - name: copy ssh-key
-#   file:
-#     src=/Users/you/.ssh/{{ item.dest }}
-#     dest={{ home_dir }}/.ssh/{{ item.dest }}
+#   copy:
+#     src: "{{ host_home_dir }}/.ssh/{{ item }}"
+#     dest: "{{ home_dir }}/.ssh/{{ item }}"
+#     owner: "{{ install_user }}"
+#     group: "{{ install_user }}"
+#     mode: 0700
 #   with_items:
 #     - id_rsa
 #     - id_rsa.pub

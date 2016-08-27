@@ -13,7 +13,7 @@
     replace="bind-address = 0.0.0.0"
 
 - name: start mariadb
-  service: name=mysql state=started enabled=yes
+  service: name=mysql state=restarted
 
 - name: create wpadmin user at mariadb
   mysql_user: name={{ dbuser_name }} password={{ dbuser_pass }} priv=*.*:ALL state=present

@@ -7,5 +7,5 @@
     regexp="^bind 127.0.0.1"
     replace="bind 0.0.0.0"
 
-- name: run redis-server
-  shell: redis-server /etc/redis/redis.conf
+- name: start redis-server
+  service: name=redis-server state=restarted

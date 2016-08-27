@@ -10,4 +10,4 @@
     replace="bind_ip = 0.0.0.0"
 
 - name: start mongodb
-  service: name=mongodb state=started
+  service: name=mongodb state=restarted
