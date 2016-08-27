@@ -15,6 +15,7 @@
 - name: ensure packages are installed
   apt: name={{ item }} state=latest
   with_items:
+    - python-psycopg2
     - postgresql
     - postgresql-contrib
 
@@ -30,7 +31,7 @@
     regexp="en_US.UTF-8"
     replace="ja_JP.UTF-8"
 
-- name: local peer off on PostgreSQl
+- name: local peer off on PostgreSQL
   replace: >
     dest=/etc/postgresql/{{ pg_version }}/main/pg_hba.conf
     regexp="local +all +all +peer"
@@ -38,6 +39,9 @@
 
 - name: trust all address on PostgreSQL
   lineinfile: dest=/etc/postgresql/{{ pg_version }}/main/pg_hba.conf line="host all all 0.0.0.0/0 trust"
+
+- name: restart postgresql
+  service: name=postgresql state=restarted
 
 - name: ensure database is created
   postgresql_db: name={{ db_name }}

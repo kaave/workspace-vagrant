@@ -1,4 +1,4 @@
-- hosts: vagrant:ubuntu1604
+- hosts: vagrant_ubuntu1604
   connection: local
   remote_user: ubuntu
   gather_facts: no
@@ -28,9 +28,9 @@
     - include: roles/locale_jp_ubuntu.yml
       become: yes
       become_user: root
-    # - include: roles/repos_jp_ubuntu.yml
-    #   become: yes
-    #   become_user: root
+    - include: roles/repos_jp_ubuntu.yml
+      become: yes
+      become_user: root
     - include: roles/install_core_packages_ubuntu.yml
       become: yes
       become_user: root
@@ -62,3 +62,6 @@
     - include: roles/haskell.yml
       become: yes
       become_user: root
+    # - include: roles/_debug.yml
+    #   become: yes
+    #   become_user: root

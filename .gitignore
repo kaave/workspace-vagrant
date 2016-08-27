@@ -69,5 +69,7 @@ $RECYCLE.BIN/
 ### Manual ###
 
 *.retry
+ansible/roles/_debug.yml
 work/*
 !work/.gitkeep
+*console.log

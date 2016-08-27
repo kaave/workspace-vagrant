@@ -4,9 +4,16 @@
     - mariadb-server
     - mariadb-client
     - mariadb-common
+    - python-mysqldb
+
+- name: trust all address on mariadb
+  replace: >
+    dest=/etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp="^bind-address.*"
+    replace="bind-address = 0.0.0.0"
 
 - name: start mariadb
-  service: name=mariadb state=started enabled=yes
+  service: name=mysql state=started enabled=yes
 
 - name: create wpadmin user at mariadb
   mysql_user: name={{ dbuser_name }} password={{ dbuser_pass }} priv=*.*:ALL state=present

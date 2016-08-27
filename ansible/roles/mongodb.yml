@@ -1,4 +1,4 @@
-- name: install db
+- name: install mongodb
   apt: name={{ item }} state=present
   with_items:
     - mongodb
@@ -6,7 +6,7 @@
 - name: trust all address on MongoDB
   replace: >
     dest=/etc/mongodb.conf
-    regexp="^#bind_ip =.*"
+    regexp="^bind_ip =.*"
     replace="bind_ip = 0.0.0.0"
 
 - name: start mongodb
