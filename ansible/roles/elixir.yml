@@ -1,0 +1,28 @@
+#
+# dependencies: [anyenv]
+# setting_vars: [home_dir, shell]
+#
+- name: install exenv
+  shell: /bin/bash -lc "anyenv install -s exenv"
+
+#
+# dependencies: [libraries, exenv]
+# setting_vars: [home_dir, elixir_version, shell]
+#
+- name: install elixir with exenv
+  shell: /bin/bash -lc "exenv install {{ elixir_version }}"
+
+- name: elixir rehash
+  shell: /bin/bash -lc "exenv rehash"
+
+- name: set elixir version global
+  shell: /bin/bash -lc "exenv global {{ elixir_version }}"
+
+- name: install hex
+  shell: /bin/bash -lc "mix local.hex --force"
+
+- name: install archives
+  shell: /bin/bash -lc "mix archive.install {{ item }} --force"
+  with_items:
+    - https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez
+

@@ -1,0 +1,27 @@
+#
+# dependencies: [anyenv]
+# setting_vars: [home_dir, shell]
+#
+- name: install pyenv
+  shell: /bin/bash -lc "anyenv install -s pyenv"
+
+- name: install pyenv-plugins
+  git: repo="https://github.com/{{ item.name }}" dest="{{ home_dir }}/.anyenv/envs/pyenv/plugins/{{ item.path }}"
+  with_items:
+    - { name: 'yyuu/pyenv-virtualenv.git', path: 'pyenv-virtualenv' }
+
+#
+# dependencies: [libraries, pyenv]
+# setting_vars: [home_dir, python_version, shell]
+#
+- name: install python2 with pyenv
+  shell: /bin/bash -lc "pyenv install {{ python2_version }}"
+
+- name: install python3 with pyenv
+  shell: /bin/bash -lc "pyenv install {{ python3_version }}"
+
+- name: set python2 version global
+  shell: /bin/bash -lc "pyenv global {{ python2_version }}"
+
+- name: python rehash
+  shell: /bin/bash -lc "pyenv rehash"

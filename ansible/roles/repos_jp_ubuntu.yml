@@ -1,0 +1,25 @@
+# TODO: http://archive.ubuntulinux.jp/ubuntu/dists/vivid/main/i18n/Translation-en 404
+
+- name: install wget
+  apt: name=wget state=present
+
+- name: change global repository to jp
+  replace: dest=/etc/apt/sources.list regexp=http://archive replace=http://jp.archive
+
+- name: change us repository to jp
+  replace: dest=/etc/apt/sources.list regexp=http://us\.archive replace=http://jp.archive
+
+- name: download gpg
+  shell: wget -q https://www.ubuntulinux.jp/{{ item }} -O- | apt-key add -
+  with_items:
+    - ubuntu-ja-archive-keyring.gpg
+    - ubuntu-jp-ppa-keyring.gpg
+
+- name: download list
+  get_url: url=https://www.ubuntulinux.jp/sources.list.d/utopic.list dest=/etc/apt/sources.list.d/ubuntu-ja.list mode=0440
+
+- name: fix list file
+  replace: dest=/etc/apt/sources.list.d/ubuntu-ja.list regexp=utopic replace=vivid
+
+- name: update apt
+  apt: update_cache=yes

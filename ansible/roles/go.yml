@@ -1,0 +1,19 @@
+#
+# dependencies: [anyenv]
+# setting_vars: [home_dir, shell]
+#
+- name: install goenv
+  shell: /bin/bash -lc "anyenv install -s goenv"
+
+#
+# dependencies: [libraries, goenv]
+# setting_vars: [home_dir, golang_version, shell]
+#
+- name: install golang with goenv
+  shell: /bin/bash -lc "goenv install {{ golang_version }}"
+
+- name: set golang version global
+  shell: /bin/bash -lc "goenv global {{ golang_version }}"
+
+- name: go rehash
+  shell: /bin/bash -lc "goenv rehash"

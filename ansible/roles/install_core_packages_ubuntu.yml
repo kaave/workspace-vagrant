@@ -1,0 +1,33 @@
+- name: install packages
+  apt: name={{ item }} state=present
+  with_items:
+    - apt-utils
+    - coreutils
+    - build-essential
+    - unzip
+    - bison
+    - libssl-dev
+    - openssl
+    - zlib1g-dev
+    - openssh-server
+    - net-tools
+    - wget
+    - curl
+    - inetutils-ping
+    - inetutils-telnet
+    - inotify-tools
+    - git
+    - mercurial
+    - gettext
+    - libncurses5-dev
+    - libperl-dev
+    - python-dev
+    - python3-dev
+    - ruby-dev
+    - lua5.2
+    - liblua5.2-dev
+    - luajit
+    # - libluajit-5.1 # error
+    - libluajit-5.1-dev
+    - libbz2-dev
+

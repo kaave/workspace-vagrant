@@ -1,0 +1,15 @@
+- name: ensure mariadb are installed
+  apt: name={{ item }} state=latest
+  with_items:
+    - mariadb-server
+    - mariadb-client
+    - mariadb-common
+
+- name: start mariadb
+  service: name=mariadb state=started enabled=yes
+
+- name: create wpadmin user at mariadb
+  mysql_user: name={{ dbuser_name }} password={{ dbuser_pass }} priv=*.*:ALL state=present
+
+- name: create database
+  mysql_db: name={{ db_name }} state=present

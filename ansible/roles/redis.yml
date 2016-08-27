@@ -1,0 +1,11 @@
+- name: install redis
+  apt: name=redis-server state=present
+
+- name: trust all address on redis
+  replace: >
+    dest=/etc/redis/redis.conf
+    regexp="^#bind 127.0.0.1"
+    replace="bind 0.0.0.0"
+
+- name: run redis-server
+  shell: redis-server /etc/redis/redis.conf

@@ -1,0 +1,21 @@
+- name: copy tokyo localtime
+  copy: src=/usr/share/zoneinfo/Asia/Tokyo dest=/etc/localtime
+
+- name: set Tokyo timezone
+  lineinfile:
+    dest=/etc/timezone
+    line='Asia/Tokyo'
+
+- name: enable Tokyo timezone
+  shell: date
+
+- name: set locale settings to Japanese
+  lineinfile:
+    dest=/etc/default/locale
+    line={{ item }}
+  with_items:
+    - 'LC_ALL=ja_JP.UTF-8'
+    - 'LANG=ja_JP.UTF-8'
+
+- name: enable locale
+  locale_gen: name=ja_JP.UTF-8

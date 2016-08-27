@@ -1,0 +1,33 @@
+#
+# dependencies: [anyenv]
+# setting_vars: [home_dir, shell]
+#
+- name: install erlenv
+  shell: /bin/bash -lc "anyenv install -s erlenv"
+
+- name: download erlang
+  get_url: url=http://www.erlang.org/download/otp_src_{{ erlang_version }}.tar.gz dest=/tmp/otp_src_{{ erlang_version }}.tar.gz mode=0440
+
+- name: extract erlang source
+  shell: cd /tmp/ && tar xfvz otp_src_{{ erlang_version }}.tar.gz
+
+- name: install erlang
+  shell: cd /tmp/otp_src_{{ erlang_version }} && export ERL_TOP=`pwd` && ./configure --prefix={{ home_dir }}/.anyenv/envs/erlenv/releases/{{ erlang_version }} && make && make install
+
+- name: remove src
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /tmp/otp_src_{{ erlang_version }}.tar.gz
+    - /tmp/otp_src_{{ erlang_version }}
+
+#
+# dependencies: [libraries, erlenv]
+# setting_vars: [home_dir, erlang_version, shell]
+#
+- name: set erlang version global
+  shell: /bin/bash -lc "erlenv global {{ erlang_version }}"
+
+- name: erlenv rehash
+  shell: /bin/bash -lc "erlenv rehash"

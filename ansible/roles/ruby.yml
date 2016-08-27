@@ -1,0 +1,29 @@
+#
+# dependencies: [anyenv]
+# setting_vars: [home_dir, shell]
+#
+- name: install rbenv
+  shell: /bin/bash -lc "anyenv install -s rbenv"
+
+- name: install rbenv-plugins
+  git: repo="https://github.com/{{ item.name }}" dest="{{ home_dir }}/.anyenv/envs/rbenv/plugins/{{ item.path }}"
+  with_items:
+    - { name: 'sstephenson/rbenv-default-gems.git', path: 'rbenv-default-gems' }
+    - { name: 'sstephenson/rbenv-gem-rehash.git', path: 'rbenv-gem-rehash' }
+
+- name: link default file rbenv-plugins
+  file:
+    src: "{{ home_dir }}/dotfiles/default_libraries/default-gems"
+    dest: "{{ home_dir }}/.anyenv/envs/rbenv/default-gems"
+    state: link
+
+#
+# dependencies: [libraries, rbenv]
+# setting_vars: [home_dir, ruby_version, shell]
+#
+- name: install ruby with rbenv
+  shell: /bin/bash -lc "rbenv install {{ ruby_version }}"
+
+- name: set ruby version global
+  shell: /bin/bash -lc "rbenv global {{ ruby_version }}"
+

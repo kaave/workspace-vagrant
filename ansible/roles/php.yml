@@ -1,0 +1,66 @@
+#
+# dependencies: [anyenv]
+# setting_vars: [home_dir, shell]
+#
+- name: install phpenv
+  shell: /bin/bash -lc "anyenv install -s phpenv"
+
+- name: install dependency packages
+  apt: name={{ item }} state=present
+  become: yes
+  become_user: root
+  with_items:
+    - libxml2-dev
+    - re2c
+    - imagemagick
+    - libcurl4-openssl-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libmcrypt-dev
+    - libtidy-dev
+    - libxslt-dev
+    - autoconf
+    - automake
+
+#
+# dependencies: [libraries, phpenv]
+# setting_vars: [home_dir, php_version, shell]
+#
+- name: install php with phpenv
+  shell: /bin/bash -lc "phpenv install {{ php_version }}"
+
+- name: set php version global
+  shell: /bin/bash -lc "phpenv global {{ php_version }}"
+
+- name: php rehash
+  shell: /bin/bash -lc "phpenv rehash"
+
+# PHP-FPM
+- name: copy php-fpm settings
+  synchronize:
+    src: "{{ home_dir }}/.anyenv/envs/phpenv/versions/{{ php_version }}/etc/{{ item.src }}"
+    dest: "{{ home_dir }}/.anyenv/envs/phpenv/versions/{{ php_version }}/etc/{{ item.dest }}"
+  delegate_to: "{{ inventory_hostname }}"
+  with_items:
+    - { src: php-fpm.d/www.conf.default, dest: php-fpm.d/www.conf }
+    - { src: php-fpm.conf.default, dest: php-fpm.conf }
+
+- name: setting php-fpm
+  replace:
+    dest: "{{ item.dest }}"
+    regexp: "{{ item.regexp }}"
+    replace: "{{ item.replace }}"
+  with_items:
+    - { dest: "{{ home_dir }}/.anyenv/envs/phpenv/versions/{{ php_version }}/etc/php-fpm.conf", regexp: ";events.mechanism = epoll", replace: "events.mechanism = epoll\npid = {{ home_dir }}/php-fpm.pid" }
+    - { dest: "{{ home_dir }}/.anyenv/envs/phpenv/versions/{{ php_version }}/etc/php-fpm.d/www.conf", regexp: "^listen = 127.0.0.1:9000", replace: "listen = 9000" }
+    - { dest: "{{ home_dir }}/.anyenv/envs/phpenv/versions/{{ php_version }}/etc/php-fpm.d/www.conf", regexp: "^user = nobody", replace: "user = {{ install_user }}" }
+    - { dest: "{{ home_dir }}/.anyenv/envs/phpenv/versions/{{ php_version }}/etc/php-fpm.d/www.conf", regexp: "^group = nobody", replace: "group = {{ install_user }}" }
+
+- name: run php-fpm
+  shell: /bin/bash -lc "php-fpm"
+
+- name: install composer apps
+  shell: /bin/bash -lc 'composer global require "{{ item }}"'
+  with_items:
+    - squizlabs/php_codesniffer=*
+    - phpmd/phpmd=*

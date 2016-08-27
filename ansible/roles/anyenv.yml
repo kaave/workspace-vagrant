@@ -1,0 +1,17 @@
+- name: install anyenv
+  git: repo=https://github.com/riywo/anyenv.git dest={{ home_dir }}/.anyenv
+
+- name: install plugins
+  git: repo=https://github.com/{{ item.name }} dest={{ home_dir }}/.anyenv/plugins/{{ item.dest }}
+  with_items:
+    - { name: 'znz/anyenv-update.git', dest: 'anyenv-update' }
+    - { name: 'znz/anyenv-git.git', dest: 'anyenv-git' }
+
+# - name: setting profile
+#   lineinfile:
+#     dest: "{{ home_dir }}/.profile"
+#     line: "{{ item }}"
+#   with_items:
+#     - 'export PATH="$HOME/.anyenv/bin:$PATH"'
+#     - 'eval "$(anyenv init -)"'
+

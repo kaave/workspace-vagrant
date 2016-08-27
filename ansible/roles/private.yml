@@ -1,0 +1,30 @@
+#
+# dependencies: []
+# setting_vars: [home_dir]
+#
+- name: install packages
+  apt: name={{ item }} state=present
+  become: yes
+  become_user: root
+  with_items:
+    - zsh
+    - tree
+    - tmux
+    - figlet
+    - htop
+    - direnv
+    - vim-gnome
+
+- name: get dotfiles
+  git: repo=https://github.com/kaave/dotfiles.git dest={{ home_dir }}/dotfiles
+
+- name: install dotfiles
+  shell: /usr/bin/zsh -c '{{ home_dir }}/dotfiles/_setup.zsh'
+
+# - name: copy ssh-key
+#   file:
+#     src=/Users/you/.ssh/{{ item.dest }}
+#     dest={{ home_dir }}/.ssh/{{ item.dest }}
+#   with_items:
+#     - id_rsa
+#     - id_rsa.pub

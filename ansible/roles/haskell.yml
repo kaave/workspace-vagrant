@@ -1,0 +1,11 @@
+- name: add key
+  apt_key: keyserver=keyserver.ubuntu.com id=575159689BEFB442
+
+- name: add fpco list
+  shell: echo 'deb http://download.fpcomplete.com/ubuntu xenial main' | tee /etc/apt/sources.list.d/fpco.list
+
+- name: update apt
+  apt: update_cache=yes
+
+- name: install dependency packages
+  apt: name=stack state=present
