@@ -1,2 +1,17 @@
 - name: install nginx
   apt: name=nginx state=present
+
+- name: copy php-fpm
+  copy:
+    src: ./settings/nginx/php-fpm
+    dest: /etc/nginx/sites-available/php-fpm
+    mode: 0644
+
+- name: enable php-fpm
+  file:
+    src: /etc/nginx/sites-available/php-fpm
+    dest: /etc/nginx/sites-enabled/php-fpm
+    state: link
+
+- name: restart nginx
+  service: name=nginx state=restarted

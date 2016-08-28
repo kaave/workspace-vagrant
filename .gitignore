@@ -71,5 +71,6 @@ $RECYCLE.BIN/
 *.retry
 ansible/roles/_debug.yml
 work/*
-!work/.gitkeep
+work/php/*
+!work/php/index.php
 *console.log

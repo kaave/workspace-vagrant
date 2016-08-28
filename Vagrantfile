@@ -13,7 +13,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.synced_folder './work',
-                          '/var/work',
+                          '/home/ubuntu/work',
                           type: 'rsync',
                           # 標準の設定から[--delete]のみ除外
                           rsync__args: ['--verbose', '--archive', '-z', '--copy-links'],
