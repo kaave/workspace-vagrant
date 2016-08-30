@@ -16,7 +16,7 @@
   service: name=mysql state=restarted
 
 - name: create wpadmin user at mariadb
-  mysql_user: name={{ dbuser_name }} password={{ dbuser_pass }} priv=*.*:ALL state=present
+  mysql_user: name={{ dbuser_name }} password={{ dbuser_pass }} host=% priv=*.*:ALL state=present
 
 - name: create database
   mysql_db: name={{ db_name }} state=present
