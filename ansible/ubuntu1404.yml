@@ -1,0 +1,72 @@
+- hosts: ubuntu1404
+  connection: local
+  remote_user: vagrant
+  gather_facts: no
+  vars:
+    home_dir: /home/vagrant
+    host_home_dir: /Users/abe
+    install_user: vagrant
+    install_group: vagrant
+    dbuser_name: vagrant
+    dbuser_pass: vagrant
+    db_name: vagrant
+    mysql_conf: /etc/mysql/my.cnf
+
+    pg_version: 9.5
+    ruby_version: 2.3.1
+    node_version: 6.5.0
+    erlang_version: 19.0
+    elixir_version: 1.3.2
+    python2_version: 2.7.12
+    python3_version: 3.5.2
+    golang_version: 1.7
+    php_version: 7.0.9
+
+    shell: bash
+
+  pre_tasks:
+    - raw: sudo apt-get update -qq
+  tasks:
+    - include: roles/sysctl.yml
+      become: yes
+      become_user: root
+    - include: roles/locale_jp_ubuntu.yml
+      become: yes
+      become_user: root
+    # - include: roles/repos_jp_ubuntu.yml
+    #   become: yes
+    #   become_user: root
+    - include: roles/install_core_packages_ubuntu.yml
+      become: yes
+      become_user: root
+    - include: roles/nginx.yml
+      become: yes
+      become_user: root
+    - include: roles/postgres.yml
+      become: yes
+      become_user: root
+    - include: roles/redis.yml
+      become: yes
+      become_user: root
+    - include: roles/mongodb.yml
+      become: yes
+      become_user: root
+    - include: roles/mariadb.yml
+      become: yes
+      become_user: root
+    - include: roles/sqlite.yml
+      become: yes
+      become_user: root
+    - include: roles/private.yml
+
+    - include: roles/anyenv.yml
+    - include: roles/ruby.yml
+    - include: roles/node.yml
+    - include: roles/erlang.yml
+    - include: roles/elixir.yml
+    - include: roles/python.yml
+    # - include: roles/go.yml  # goenv error
+    - include: roles/php.yml
+    - include: roles/haskell.yml
+      become: yes
+      become_user: root

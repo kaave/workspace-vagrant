@@ -1,2 +1,4 @@
-[vagrant_ubuntu1604]
+[ubuntu1604]
+localhost
+[ubuntu1404]
 localhost

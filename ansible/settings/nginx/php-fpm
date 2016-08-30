@@ -2,7 +2,7 @@ server {
     listen 80;
     server_name php.workspace;
 
-    root /home/ubuntu/work/php;
+    root /home/vagrant/work/php;
     index index.php;
 
     location / {

@@ -12,7 +12,8 @@
     - tmux
     - figlet
     - htop
-    - direnv
+    # not find: 14.04
+    # - direnv
     - vim-gnome
 
 - name: get dotfiles

@@ -1,6 +1,8 @@
 Vagrant.configure('2') do |config|
-  config.vm.box = 'ubuntu/xenial64'
-  config.vm.box_url = 'https://atlas.hashicorp.com/ubuntu/boxes/xenial64'
+  # config.vm.box = 'ubuntu/xenial64'
+  # config.vm.box_url = 'https://atlas.hashicorp.com/ubuntu/boxes/xenial64'
+  config.vm.box = 'ubuntu/trusty64'
+  config.vm.box_url = 'https://atlas.hashicorp.com/ubuntu/boxes/trusty64'
   config.vm.box_check_update = true
 
   config.vm.network 'private_network', ip: '10.10.10.10'
@@ -13,7 +15,8 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.synced_folder './work',
-                          '/home/ubuntu/work',
+                          # '/home/ubuntu/work',
+                          '/home/vagrant/work',
                           type: 'rsync',
                           # 標準の設定から[--delete]のみ除外
                           rsync__args: ['--verbose', '--archive', '-z', '--copy-links'],
@@ -46,7 +49,8 @@ Vagrant.configure('2') do |config|
   config.vm.provision 'ansible_local' do |ansible|
     ansible.provisioning_path = '/var/ansible'
     ansible.inventory_path = '/var/ansible/hosts'
-    ansible.playbook = './vagrant.yml'
+    # ansible.playbook = './ubuntu1604.yml'
+    ansible.playbook = './ubuntu1404.yml'
     ansible.limit = 'all'
     ansible.verbose = 'vv'
   end

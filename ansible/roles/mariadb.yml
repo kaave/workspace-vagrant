@@ -8,7 +8,7 @@
 
 - name: trust all address on mariadb
   replace: >
-    dest=/etc/mysql/mariadb.conf.d/50-server.cnf
+    dest={{ mysql_conf }}
     regexp="^bind-address.*"
     replace="bind-address = 0.0.0.0"
 

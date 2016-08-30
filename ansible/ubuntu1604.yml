@@ -1,4 +1,5 @@
-- hosts: vagrant_ubuntu1604
+# confused from some unknown errors!
+- hosts: ubuntu1604
   connection: local
   remote_user: ubuntu
   gather_facts: no
@@ -10,10 +11,11 @@
     dbuser_name: ubuntu
     dbuser_pass: ubuntu
     db_name: ubuntu
+    mysql_conf: /etc/mysql/mariadb.conf.d/50-server.cnf
 
     pg_version: 9.5
     ruby_version: 2.3.1
-    node_version: 6.4.0
+    node_version: 6.5.0
     erlang_version: 19.0
     elixir_version: 1.3.2
     python2_version: 2.7.12
